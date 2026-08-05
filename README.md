@@ -59,7 +59,7 @@ BeamSolver/
 * [x] Point load implementation
 * [x] Support reaction solver
 * [x] Multiple point loads
-* [ ] Distributed loads
+* [x] Distributed loads
 * [ ] Shear force diagrams
 * [ ] Bending moment diagrams
 * [ ] Stress analysis
