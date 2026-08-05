@@ -11,15 +11,15 @@ from plotting import plot_beam
 from moment import calculate_moment
 from plotting import plot_moment
 from max_values import find_max_moment
+from sections import Rectangle
+from stress import calculate_bending_stress
 
-beam = Beam(12)
+beam = Beam(10)
 
 beam.add_support(PinSupport(0))
-beam.add_support(RollerSupport(12))
+beam.add_support(RollerSupport(10))
 
-beam.add_load(PointLoad(500, 2))
-beam.add_load(DistributedLoad(100, 4, 8))
-beam.add_load(TriangularLoad(50, 9, 12))
+beam.add_load(PointLoad(500, 4))
 
 
 solve_reactions(beam)
@@ -37,6 +37,11 @@ max_moment, location = find_max_moment(
     moment_values
 )
 
+section = Rectangle(
+    width=0.0381,
+    height=0.0889
+)
+
 print(
     "Maximum Moment:",
     round(max_moment, 2),
@@ -47,6 +52,17 @@ print(
     "Location:",
     round(location, 2),
     "m"
+)
+
+stress = calculate_bending_stress(
+    max_moment,
+    section
+)
+
+print(
+    "Maximum Bending Stress:",
+    round(stress / 1e6, 2),
+    "MPa"
 )
 
 print("Beam length:", beam.length)
