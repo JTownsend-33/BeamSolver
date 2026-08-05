@@ -11,8 +11,11 @@ def solve_reactions(beam):
     total_moment = 0
 
     for load in beam.loads:
-        total_force += load.magnitude
-        total_moment += load.magnitude * (load.position - A)
+
+        magnitude, position = load.equivalent_load()
+
+        total_force += magnitude
+        total_moment += magnitude * (position - A)
 
     By = total_moment / (B - A)
     Ay = total_force - By

@@ -1,6 +1,7 @@
 
 from beam import Beam                               # imports definitions from other .py programs
 from loads import PointLoad
+from loads import DistributedLoad
 from supports import PinSupport, RollerSupport
 from solver import solve_reactions
 
@@ -11,7 +12,7 @@ beam.add_support(RollerSupport(15))
 
 beam.add_load(PointLoad(100, 6))
 beam.add_load(PointLoad(200, 8))
-beam.add_load(PointLoad(50, 12))
+beam.add_load(DistributedLoad(200,10,15))
 
 solve_reactions(beam)
 
@@ -22,8 +23,21 @@ for support in beam.supports:
     print(type(support).__name__, support.position)
 
 print("\nLoads")
+
 for load in beam.loads:
-    print(load.magnitude, "N at", load.position, "m")
+
+    if isinstance(load, PointLoad):
+        print(load.magnitude, "N at", load.position, "m")
+
+    elif isinstance(load, DistributedLoad):
+        print(
+            load.intensity,
+            "N/m from",
+            load.start,
+            "m to",
+            load.end,
+            "m"
+        )
 
 print("\nReaction Forces")
 for support in beam.supports:
