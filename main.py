@@ -7,17 +7,19 @@ from supports import PinSupport, RollerSupport
 from solver import solve_reactions
 from shear import calculate_shear
 from plotting import plot_shear
+from plotting import plot_beam
 from moment import calculate_moment
 from plotting import plot_moment
+from max_values import find_max_moment
 
 beam = Beam(12)
 
 beam.add_support(PinSupport(0))
 beam.add_support(RollerSupport(12))
 
-beam.add_load(PointLoad(100, 3))
-beam.add_load(DistributedLoad(20, 5, 10))
-beam.add_load(TriangularLoad(50, 7, 12))
+beam.add_load(PointLoad(500, 2))
+beam.add_load(DistributedLoad(100, 4, 8))
+beam.add_load(TriangularLoad(50, 9, 12))
 
 
 solve_reactions(beam)
@@ -27,6 +29,24 @@ x_values, shear_values = calculate_shear(beam)
 x_values, moment_values = calculate_moment(
     x_values,
     shear_values
+
+)
+
+max_moment, location = find_max_moment(
+    x_values,
+    moment_values
+)
+
+print(
+    "Maximum Moment:",
+    round(max_moment, 2),
+    "Nm"
+)
+
+print(
+    "Location:",
+    round(location, 2),
+    "m"
 )
 
 print("Beam length:", beam.length)
@@ -62,5 +82,7 @@ for x, shear in zip(x_values, shear_values):
 for x, moment in zip(x_values, moment_values):
     print(f"x = {x:.1f} m   Moment = {moment:.2f} Nm")
 
+plot_beam(beam)
 plot_shear(x_values, shear_values)
 plot_moment(x_values, moment_values)
+
