@@ -7,7 +7,7 @@ def calculate_shear(beam):
     x_values = []
     shear_values = []
 
-    step = 0.1
+    step = 0.01
     num_steps = int(beam.length / step)
 
     for i in range(num_steps + 1):

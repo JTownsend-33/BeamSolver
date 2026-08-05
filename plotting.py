@@ -17,3 +17,20 @@ def plot_shear(x_values, shear_values):
     plt.axhline(0)
 
     plt.show()
+
+
+def plot_moment(x_values, moment_values):
+
+    plt.figure(figsize=(10,5))
+
+    plt.plot(x_values, moment_values)
+
+    plt.xlabel("Position along beam (m)")
+    plt.ylabel("Moment (Nm)")
+    plt.title("Bending Moment Diagram")
+
+    plt.grid(True)
+
+    plt.axhline(0)
+
+    plt.show()
