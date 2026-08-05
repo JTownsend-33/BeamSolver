@@ -15,12 +15,12 @@ the core statics and mechanics algorithms are implemented manually to demonstrat
 * Add point loads
 * Add uniform distributed loads
 * Calculate support reactions using static equilibrium equations
+* Shear force diagram generation
 * Modular, object-oriented project structure
 
 ## Planned Features
 
 * Triangular, and trapezoidal distributed loads
-* Shear force diagram generation
 * Bending moment diagram generation
 * Bending stress calculations
 * Beam deflection calculations
@@ -60,7 +60,7 @@ BeamSolver/
 * [x] Support reaction solver
 * [x] Multiple point loads
 * [x] Distributed loads
-* [ ] Shear force diagrams
+* [x] Shear force diagrams
 * [ ] Bending moment diagrams
 * [ ] Stress analysis
 * [ ] Deflection analysis
