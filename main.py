@@ -10,6 +10,8 @@ beam.add_support(PinSupport(0))
 beam.add_support(RollerSupport(15))
 
 beam.add_load(PointLoad(100, 6))
+beam.add_load(PointLoad(200, 8))
+beam.add_load(PointLoad(50, 12))
 
 solve_reactions(beam)
 

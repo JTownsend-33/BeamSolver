@@ -1,18 +1,21 @@
 
 def solve_reactions(beam):
+
     pin = beam.supports[0]
     roller = beam.supports[1]
-
-    load = beam.loads[0]
 
     A = pin.position
     B = roller.position
 
-    P = load.magnitude
-    x = load.position
+    total_force = 0
+    total_moment = 0
 
-    By = P * (x - A) / (B - A)
-    Ay = P - By
+    for load in beam.loads:
+        total_force += load.magnitude
+        total_moment += load.magnitude * (load.position - A)
+
+    By = total_moment / (B - A)
+    Ay = total_force - By
 
     pin.reaction = Ay
     roller.reaction = By
