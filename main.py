@@ -2,6 +2,7 @@
 from beam import Beam                               # imports definitions from other .py programs
 from loads import PointLoad
 from loads import DistributedLoad
+from loads import TriangularLoad
 from supports import PinSupport, RollerSupport
 from solver import solve_reactions
 from shear import calculate_shear
@@ -9,12 +10,14 @@ from plotting import plot_shear
 from moment import calculate_moment
 from plotting import plot_moment
 
-beam = Beam(10)
+beam = Beam(12)
 
 beam.add_support(PinSupport(0))
-beam.add_support(RollerSupport(10))
+beam.add_support(RollerSupport(12))
 
-beam.add_load(PointLoad(500, 4))
+beam.add_load(PointLoad(100, 3))
+beam.add_load(DistributedLoad(20, 5, 10))
+beam.add_load(TriangularLoad(50, 7, 12))
 
 
 solve_reactions(beam)

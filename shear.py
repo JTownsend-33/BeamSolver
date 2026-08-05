@@ -1,5 +1,5 @@
 
-from loads import PointLoad, DistributedLoad
+from loads import PointLoad, DistributedLoad, TriangularLoad
 
 
 def calculate_shear(beam):
@@ -54,6 +54,31 @@ def calculate_shear(beam):
                     total_length = load.end - load.start
 
                     shear -= load.intensity * total_length
+
+        # Triangular load
+        for load in beam.loads:
+
+            if isinstance(load, TriangularLoad):
+
+                if x < load.start:
+
+                    pass
+
+                elif x <= load.end:
+
+                    length = x - load.start
+
+                    height = load.max_intensity * (
+                            length / (load.end - load.start)
+                    )
+
+                    shear -= 0.5 * length * height
+
+                else:
+
+                    length = load.end - load.start
+
+                    shear -= 0.5 * length * load.max_intensity
 
         x_values.append(x)
         shear_values.append(shear)
