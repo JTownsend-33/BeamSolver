@@ -4,17 +4,20 @@ from loads import PointLoad
 from loads import DistributedLoad
 from supports import PinSupport, RollerSupport
 from solver import solve_reactions
+from shear import calculate_shear
+from plotting import plot_shear
 
-beam = Beam(15)
+beam = Beam(10)
 
 beam.add_support(PinSupport(0))
-beam.add_support(RollerSupport(15))
+beam.add_support(RollerSupport(10))
 
-beam.add_load(PointLoad(100, 6))
-beam.add_load(PointLoad(200, 8))
-beam.add_load(DistributedLoad(200,10,15))
+beam.add_load(PointLoad(100, 2))
+beam.add_load(PointLoad(50, 4))
+beam.add_load(DistributedLoad(100, 6, 10))
 
 solve_reactions(beam)
+x_values, shear_values = calculate_shear(beam)
 
 print("Beam length:", beam.length)
 
@@ -42,3 +45,8 @@ for load in beam.loads:
 print("\nReaction Forces")
 for support in beam.supports:
     print(type(support).__name__, "=", support.reaction, "N")
+
+for x, shear in zip(x_values, shear_values):
+    print(f"x = {x:.1f} m     Shear = {shear:.1f} N")
+
+plot_shear(x_values, shear_values)
