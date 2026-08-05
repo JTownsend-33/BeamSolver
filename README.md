@@ -13,13 +13,13 @@ the core statics and mechanics algorithms are implemented manually to demonstrat
 * Create beam objects with configurable lengths
 * Add pin and roller supports
 * Add point loads
+* Add uniform distributed loads
 * Calculate support reactions using static equilibrium equations
 * Modular, object-oriented project structure
 
 ## Planned Features
 
-* Multiple point loads
-* Uniform, triangular, and trapezoidal distributed loads
+* Triangular, and trapezoidal distributed loads
 * Shear force diagram generation
 * Bending moment diagram generation
 * Bending stress calculations
