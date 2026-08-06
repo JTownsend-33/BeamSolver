@@ -13,13 +13,14 @@ from plotting import plot_moment
 from max_values import find_max_moment
 from sections import Rectangle
 from stress import calculate_bending_stress
+from deflection import calculate_deflection
 
 beam = Beam(10)
 
 beam.add_support(PinSupport(0))
 beam.add_support(RollerSupport(10))
 
-beam.add_load(PointLoad(500, 4))
+beam.add_load(PointLoad(0, 5))
 
 
 solve_reactions(beam)
@@ -98,7 +99,21 @@ for x, shear in zip(x_values, shear_values):
 for x, moment in zip(x_values, moment_values):
     print(f"x = {x:.1f} m   Moment = {moment:.2f} Nm")
 
+E = 200e9          # Steel (Pa)
+
+I = section.moment_of_inertia()
+
+x_deflection, deflection = calculate_deflection(
+    beam,
+    x_values,
+    moment_values,
+    E,
+    I
+)
+print("Start:", deflection[0])
+print("End:", deflection[-1])
+print("Minimum:", min(deflection))
+print("Middle:", deflection[len(deflection)//2])
 plot_beam(beam)
 plot_shear(x_values, shear_values)
 plot_moment(x_values, moment_values)
-
