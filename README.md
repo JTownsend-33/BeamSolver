@@ -22,10 +22,10 @@ the core statics and mechanics algorithms are implemented manually to demonstrat
 * Beam deflection calculations
 * Modular, object-oriented project structure
 * Material property database
+* Interactive graphical user interface (GUI)
 
 ## Planned Features 
 
-* Interactive graphical user interface (GUI)
 * PDF report generation
 * Save and load beam configurations
 
