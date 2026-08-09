@@ -11,7 +11,7 @@ from moment import calculate_moment
 from max_values import find_max_moment
 from stress import calculate_bending_stress
 from deflection import calculate_deflection
-from plotting import plot_beam, plot_shear, plot_moment, plot_deflection
+from plotting import plot_beam, plot_shear, plot_moment
 
 
 # =========================================================
@@ -28,8 +28,84 @@ loads = []
 window = Tk()
 
 window.title("Beam Solver")
-window.geometry("700x850")
+window.geometry("800x850")
 
+
+# =========================================================
+# SCROLLABLE MAIN AREA
+# =========================================================
+
+canvas = Canvas(window)
+
+scrollbar = Scrollbar(
+    window,
+    orient=VERTICAL,
+    command=canvas.yview
+)
+
+main_frame = Frame(canvas)
+
+main_frame.bind(
+    "<Configure>",
+    lambda event: canvas.configure(
+        scrollregion=canvas.bbox("all")
+    )
+)
+
+frame_window = canvas.create_window(
+    (0, 0),
+    window=main_frame,
+    anchor="nw"
+)
+
+canvas.bind(
+    "<Configure>",
+    lambda event: canvas.itemconfigure(
+        frame_window,
+        width=event.width
+    )
+)
+
+canvas.configure(
+    yscrollcommand=scrollbar.set
+)
+
+canvas.pack(
+    side=LEFT,
+    fill=BOTH,
+    expand=True
+)
+
+scrollbar.pack(
+    side=RIGHT,
+    fill=Y
+)
+
+
+
+# =========================================================
+# MOUSE WHEEL SCROLLING
+# =========================================================
+
+def _on_mousewheel(event):
+    if event.delta:
+        canvas.yview_scroll(
+            int(-1 * (event.delta / 120)),
+            "units"
+        )
+
+
+def _on_linux_scroll_up(event):
+    canvas.yview_scroll(-1, "units")
+
+
+def _on_linux_scroll_down(event):
+    canvas.yview_scroll(1, "units")
+
+
+canvas.bind_all("<MouseWheel>", _on_mousewheel)
+canvas.bind_all("<Button-4>", _on_linux_scroll_up)
+canvas.bind_all("<Button-5>", _on_linux_scroll_down)
 
 # =========================================================
 # TKINTER VARIABLES
@@ -401,28 +477,9 @@ def solve_beam():
         max_deflection_index
     ]
 
-    # ---------------- PLOTS ----------------
-
-    plot_beam(beam)
-
-    plot_shear(
-        x_values,
-        shear_values
-    )
-
-    plot_moment(
-        x_values,
-        moment_values
-    )
-
     safety_factor = (
         yield_strength /
         abs(bending_stress)
-    )
-
-    plot_deflection(
-        x_deflection,
-        deflection_values
     )
 
     result_text = "Beam Analysis Results:\n\n"
@@ -475,6 +532,21 @@ def solve_beam():
         text=result_text
     )
 
+
+    # ---------------- PLOTS ----------------
+
+    plot_beam(beam)
+
+    plot_shear(
+        x_values,
+        shear_values
+    )
+
+    plot_moment(
+        x_values,
+        moment_values
+    )
+
     print("\nMaterial:", selected_material.name)
     print("E =", E)
     print("Yield Strength =", yield_strength)
@@ -502,7 +574,7 @@ def solve_beam():
 # =========================================================
 
 length_label = Label(
-    window,
+    main_frame,
     text="Beam Length (m):",
     font=("Arial", 14)
 )
@@ -515,7 +587,7 @@ length_label.grid(
 )
 
 length_entry = Entry(
-    window,
+    main_frame,
     font=("Arial", 14)
 )
 
@@ -525,7 +597,7 @@ length_entry.grid(
 )
 
 pin_label = Label(
-    window,
+    main_frame,
     text="Pin Location (m):",
     font=("Arial", 14)
 )
@@ -538,7 +610,7 @@ pin_label.grid(
 )
 
 pin_entry = Entry(
-    window,
+    main_frame,
     font=("Arial", 14)
 )
 
@@ -548,7 +620,7 @@ pin_entry.grid(
 )
 
 roller_label = Label(
-    window,
+    main_frame,
     text="Roller Location (m):",
     font=("Arial", 14)
 )
@@ -561,7 +633,7 @@ roller_label.grid(
 )
 
 roller_entry = Entry(
-    window,
+    main_frame,
     font=("Arial", 14)
 )
 
@@ -576,7 +648,7 @@ roller_entry.grid(
 # =========================================================
 
 material_label = Label(
-    window,
+    main_frame,
     text="Material:",
     font=("Arial", 14)
 )
@@ -589,7 +661,7 @@ material_label.grid(
 )
 
 material_menu = OptionMenu(
-    window,
+    main_frame,
     material_var,
     *materials.keys()
 )
@@ -611,7 +683,7 @@ material_menu.grid(
 # =========================================================
 
 load_force_label = Label(
-    window,
+    main_frame,
     text="Load Force (N):",
     font=("Arial", 14)
 )
@@ -624,7 +696,7 @@ load_force_label.grid(
 )
 
 load_force_entry = Entry(
-    window,
+    main_frame,
     font=("Arial", 14)
 )
 
@@ -634,7 +706,7 @@ load_force_entry.grid(
 )
 
 load_position_label = Label(
-    window,
+    main_frame,
     text="Load Position (m):",
     font=("Arial", 14)
 )
@@ -647,7 +719,7 @@ load_position_label.grid(
 )
 
 load_position_entry = Entry(
-    window,
+    main_frame,
     font=("Arial", 14)
 )
 
@@ -657,7 +729,7 @@ load_position_entry.grid(
 )
 
 add_load_button = Button(
-    window,
+    main_frame,
     text="Add Point Load",
     font=("Arial", 14),
     command=add_point_load
@@ -676,7 +748,7 @@ add_load_button.grid(
 # =========================================================
 
 udl_force_label = Label(
-    window,
+    main_frame,
     text="UDL Force (N/m):",
     font=("Arial", 14)
 )
@@ -689,7 +761,7 @@ udl_force_label.grid(
 )
 
 udl_force_entry = Entry(
-    window,
+    main_frame,
     font=("Arial", 14)
 )
 
@@ -699,7 +771,7 @@ udl_force_entry.grid(
 )
 
 udl_start_label = Label(
-    window,
+    main_frame,
     text="UDL Start (m):",
     font=("Arial", 14)
 )
@@ -712,7 +784,7 @@ udl_start_label.grid(
 )
 
 udl_start_entry = Entry(
-    window,
+    main_frame,
     font=("Arial", 14)
 )
 
@@ -722,7 +794,7 @@ udl_start_entry.grid(
 )
 
 udl_end_label = Label(
-    window,
+    main_frame,
     text="UDL End (m):",
     font=("Arial", 14)
 )
@@ -735,7 +807,7 @@ udl_end_label.grid(
 )
 
 udl_end_entry = Entry(
-    window,
+    main_frame,
     font=("Arial", 14)
 )
 
@@ -745,7 +817,7 @@ udl_end_entry.grid(
 )
 
 udl_button = Button(
-    window,
+    main_frame,
     text="Add Distributed Load",
     font=("Arial", 14),
     command=add_distributed_load
@@ -764,7 +836,7 @@ udl_button.grid(
 # =========================================================
 
 load_display = Label(
-    window,
+    main_frame,
     text="Current Loads:",
     font=("Arial", 14)
 )
@@ -778,7 +850,7 @@ load_display.grid(
 )
 
 remove_button = Button(
-    window,
+    main_frame,
     text="Remove Last Load",
     font=("Arial", 14),
     command=remove_last_load
@@ -797,7 +869,7 @@ remove_button.grid(
 # =========================================================
 
 section_label = Label(
-    window,
+    main_frame,
     text="Cross Section:",
     font=("Arial", 14)
 )
@@ -810,7 +882,7 @@ section_label.grid(
 )
 
 section_menu = OptionMenu(
-    window,
+    main_frame,
     section_var,
     "Rectangle",
     "I-Beam",
@@ -830,7 +902,7 @@ section_menu.grid(
 )
 
 section_frame = Frame(
-    window
+    main_frame
 )
 
 section_frame.grid(
@@ -849,7 +921,7 @@ update_section_fields()
 # =========================================================
 
 solve_button = Button(
-    window,
+    main_frame,
     text="Solve Beam",
     font=("Arial", 14),
     command=solve_beam
@@ -868,7 +940,7 @@ solve_button.grid(
 # =========================================================
 
 reaction_label = Label(
-    window,
+    main_frame,
     text="Results will appear here",
     font=("Arial", 14),
     justify=LEFT

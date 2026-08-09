@@ -191,3 +191,30 @@ def plot_beam(beam):
     plt.title("Beam Loading Diagram")
 
     plt.show()
+
+def plot_deflection(
+    x_values,
+    deflection_values
+):
+
+    import matplotlib.pyplot as plt
+
+    plt.figure()
+
+    plt.plot(
+        x_values,
+        deflection_values
+    )
+
+    plt.axhline(
+        y=0,
+        linewidth=0.8
+    )
+
+    plt.xlabel("Position (m)")
+    plt.ylabel("Deflection (m)")
+    plt.title("Beam Deflection")
+
+    plt.grid()
+
+    plt.show()

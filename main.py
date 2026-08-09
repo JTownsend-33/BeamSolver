@@ -20,8 +20,7 @@ beam = Beam(10)
 beam.add_support(PinSupport(0))
 beam.add_support(RollerSupport(10))
 
-beam.add_load(PointLoad(0, 5))
-
+beam.add_load(PointLoad(100, 2))
 
 solve_reactions(beam)
 
