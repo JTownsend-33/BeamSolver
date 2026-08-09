@@ -21,11 +21,11 @@ the core statics and mechanics algorithms are implemented manually to demonstrat
 * Bending stress calculations
 * Beam deflection calculations
 * Modular, object-oriented project structure
+* Material property database
 
 ## Planned Features 
 
 * Interactive graphical user interface (GUI)
-* Material property database
 * PDF report generation
 * Save and load beam configurations
 
@@ -64,7 +64,7 @@ BeamSolver/
 * [x] Bending moment diagrams
 * [x] Stress analysis
 * [x] Deflection analysis
-* [ ] Graphical user interface
+* [x] Graphical user interface
 * [ ] Documentation and examples
 
 ## License
